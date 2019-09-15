@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from "./firebase";
 import {validateEmail,validateMobile} from "./validate";
-import DataTable from "./DataTable";
+import {Table} from "./Table";
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -32,8 +32,9 @@ class App extends React.Component{
    // db.collection("User").doc("7DDiTYAbP855F36SAcTn").onSnapshot((doc)=>{console.log(doc.data())})
    db.collection("User").get().then((querySnapshot) => {
     querySnapshot.forEach((doc) => {
-        this.setState({user:doc.data()},()=>console.log(this.state.user));
+        this.setState({user:this.state.user.concat(doc.data())});
     });
+    console.log(this.state.user);
 });
   }
   addUser=()=>
@@ -61,6 +62,7 @@ class App extends React.Component{
     this.setState({
       userfield,
     });
+    window.location.reload();
   }
   render()
   {
@@ -98,7 +100,7 @@ class App extends React.Component{
           <input type="button" value="submit" onClick={this.addUser}/>
         </form>
         <div>
-        <DataTable user={this.state.user}/>
+        <Table user={this.state.user}/>
         </div>
       </div>
     );
